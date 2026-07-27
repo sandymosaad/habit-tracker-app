@@ -6,7 +6,7 @@ export type AuthStackParamList = {
 };
 
 export type AppStackParamList = {
-  Tabs: undefined;
+  Main: undefined;
   AddHabit: undefined;
   HabitDetails: {
     habitId: string;

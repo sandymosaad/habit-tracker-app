@@ -1,20 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { theme } from '@/theme';
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text> Hello on Habit tracker</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import RootNavigator from '@/navigation/RootNavigator';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+  return <RootNavigator />;
+}

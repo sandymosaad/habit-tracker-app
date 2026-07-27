@@ -26,3 +26,25 @@ src/
 ├── types/
 ├── utils/
 └── hooks/
+
+# Navigation
+RootNavigator
+│
+├── AuthNavigator
+│   ├── Login
+│   ├── Register
+│   ├── ForgotPassword
+│   └── VerifyEmail
+│
+└── AppNavigator
+    │
+    ├── BottomTabs
+    │   ├── Home
+    │   ├── Statistics
+    │   └── Profile
+    │
+    └── Stack
+        ├── AddHabit
+        ├── HabitDetails
+        ├── EditHabit
+        └── Settings
