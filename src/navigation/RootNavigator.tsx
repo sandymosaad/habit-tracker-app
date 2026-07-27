@@ -3,9 +3,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import AppNavigator from '@/navigation/AppNavigator';
 import AuthNavigator from '@/navigation/AuthNavigator';
 
-const RootNavigator = () => {
-  const isAuthenticated = true;
+import {useAppSelector} from '@/redux/hooks'
 
+const RootNavigator = () => {
+  const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated)
+  
   return (
     <NavigationContainer>
       {isAuthenticated ? (
