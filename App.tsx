@@ -1,4 +1,5 @@
 import RootNavigator from '@/navigation/RootNavigator';
+import '@/config/firebase';
 import { Provider } from 'react-redux';
 import { store } from '@/redux/store';
 
