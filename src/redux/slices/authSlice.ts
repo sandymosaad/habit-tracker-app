@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from '@reduxjs/toolkit';
 
-import {AuthState, AuthPayload} from "@/interfaces/auth.interface"
+import {AuthState, AuthPayload} from "@/interfaces/auth/auth-state.interface"
 
 const initialState:AuthState ={
-    isAuthenticated: false,
+    isAuthenticated: true,
     token: null,
     userId: null,
     email: null,
