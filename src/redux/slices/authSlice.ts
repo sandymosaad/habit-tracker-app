@@ -4,7 +4,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import {AuthState, AuthPayload} from "@/interfaces/auth/auth-state.interface"
 
 const initialState:AuthState ={
-    isAuthenticated: true,
+    isAuthenticated: false,
     token: null,
     userId: null,
     email: null,

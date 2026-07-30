@@ -24,4 +24,7 @@ export const COLORS = {
   // Base colors
   white: '#FFFFFF',
   black: '#000000',
+
+
+  disabled: '#E5E7EB',
 } as const;
