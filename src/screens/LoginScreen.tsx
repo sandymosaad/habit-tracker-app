@@ -1,4 +1,5 @@
-import React from 'react';
+import {useState} from 'react';
+
 import {
   View,
   Text,
@@ -14,21 +15,56 @@ import CustomInput from '@/components/ui/CustomInput';
 import TopHeaderAuthForm from '@/components/auth/TopHeaderAuthForm';
 import FooterAuthForm from '@/components/auth/FooterAuthForm';
 import { COLORS, SPACING, TYPOGRAPHY } from '@/theme';
-
+import { login } from '@/services/authService';
 import { useNavigation } from '@react-navigation/native';
+import {useAppDispatch} from '@/redux/hooks';
+import { authenticate } from '@/redux/slices/authSlice'
 
 import type { AuthStackParamList } from '@/navigation/types';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import ErrorMessage from '@/components/ui/ErrorMessage';
 
 type LoginScreenNavigationProp =
   NativeStackNavigationProp<AuthStackParamList, 'Login'>;
 
 const LoginScreen = () => {
-
+  const [userData, setUserData] = useState({
+    email: '',
+    password: '',
+  });
+  const [error, setError] = useState<string>('');
   const navigation = useNavigation<LoginScreenNavigationProp>();
-
+  const dispatch = useAppDispatch();
+  function handleInputChange(field: 'email' | 'password', value: string) {
+    setUserData(prev => ({
+      ...prev,
+      [field]: value,
+    }));
+  }
   function handleSignUpPress() {
     navigation.navigate('Register');
+  }
+  async function handleLoginPress() {
+    try{
+       const response = await login(
+        {
+          email: userData.email,
+          password: userData.password
+        }
+      )
+      dispatch(authenticate({
+        token: response.idToken,
+        userId: response.localId,
+        email: response.email,
+        displayName: null,
+        profileImage:  null,
+      }));
+      //profileImageUrl
+    } catch (error) {
+      setError('Login failed. Please check your credentials and try again.');
+      //console.error('Login failed:', error);
+    }
+   
   }
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -47,8 +83,8 @@ const LoginScreen = () => {
           <CustomInput
             title="Email"
             placeholder="Enter your email"
-            value=""
-            onChangeText={(text) => console.log(text)}
+            value={userData.email}
+            onChangeText={(text) => handleInputChange('email', text)}
             keyboardType="email-address"
             autoCapitalize="none"
             icon="email-outline"
@@ -57,16 +93,16 @@ const LoginScreen = () => {
           <CustomInput
             title="Password"
             placeholder="Enter your password"
-            value=""
-            onChangeText={(text) => console.log(text)}
+            value={userData.password}
+            onChangeText={userData => handleInputChange('password', userData)}
             secureTextEntry
             icon="lock-outline"
           />
-
+          <ErrorMessage message={error} />
           <View style={{ marginTop: SPACING.md }}>
             <CustomButton
               title="Log In"
-              onPress={() => console.log('Login')}
+              onPress={handleLoginPress}
               variant="primary"
             />
           </View>

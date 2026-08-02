@@ -53,15 +53,15 @@ function RegisterScreen() {
       return;
     }
     setBackendError(null); 
-    console.log('Register button pressed');
-    console.log('User State:', values);
+    // console.log('Register button pressed');
+    // console.log('User State:', values);
     try {
     setLoading(true);
     const response = await register({
       email: values.email,
       password: values.password,
     } )
-    console.log('Register response:', response)
+    //console.log('Register response:', response)
     if (response && response.idToken) {
       dispatch(authenticate({
         token: response.idToken,
@@ -81,7 +81,7 @@ function RegisterScreen() {
     } 
   }
     catch (error) {
-      console.error('Error during registration:', error);
+      //console.error('Error during registration:', error);
      if (axios.isAxiosError(error)) {
       const errorCode = error.response?.data?.error?.message;
       setBackendError(getFirebaseErrorMessage(errorCode));
