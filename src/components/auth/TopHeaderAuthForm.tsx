@@ -25,6 +25,7 @@ export default TopHeaderAuthForm;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    marginTop: SPACING.xl,
   },
   title: {
     ...TYPOGRAPHY.h2,
