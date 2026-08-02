@@ -4,4 +4,6 @@ export interface AuthResponse {
   refreshToken: string;
   expiresIn: string;
   localId: string;
+  displayName: string;
+  profileImage: string;
 }

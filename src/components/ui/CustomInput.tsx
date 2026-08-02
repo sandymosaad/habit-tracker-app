@@ -3,7 +3,8 @@ import { COLORS, RADIUS , SPACING, SHADOWS, TYPOGRAPHY } from "@/theme"
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { IconName } from "@/types/Icon";
-
+import ErrorMessage from "@/components/ui/ErrorMessage";
+import EyeIcon from "./EyeIcon";
 interface CustomInputProps {
     title: string;
     placeholder: string;
@@ -14,9 +15,12 @@ interface CustomInputProps {
     keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
     autoCorrect?: boolean;
+    error?: string | null;
+
+    setShowPassword?: (value: boolean) => void;
 }
 function CustomInput(
-    {title,placeholder, icon, value, onChangeText, secureTextEntry, keyboardType, autoCapitalize, autoCorrect}: CustomInputProps) {
+    {title,placeholder, icon, value, onChangeText, secureTextEntry, keyboardType, autoCapitalize, autoCorrect , error,setShowPassword}: CustomInputProps) {
   return <View>
     <Text style={styles.label}>{title}</Text>
     <View>
@@ -36,7 +40,14 @@ function CustomInput(
             autoCorrect={autoCorrect}
             style={styles.input}
         />
+        {title.toLowerCase().includes('password') && setShowPassword &&(
+        <EyeIcon 
+            showPassword={!secureTextEntry} 
+            style={styles.eyeIcon}
+            setShowPassword={setShowPassword}
+        />)}
     </View>
+    {error && <ErrorMessage message={error} />}
 
   </View>
 }
@@ -63,6 +74,12 @@ const styles = StyleSheet.create({
         left: SPACING.sm,
         top: '50%',
         transform: [{ translateY: -12 }],
+    },
+    eyeIcon: {
+        position: 'absolute',
+        right: SPACING.sm,
+        top: '30%',
+        transform: [{ translateX: -12 }],
     },
 
 })

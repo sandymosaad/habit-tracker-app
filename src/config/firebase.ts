@@ -14,6 +14,7 @@ const firebaseConfig = {
 };
 
 export const FIREBASE_API_KEY = firebaseConfig.apiKey
+export const FIREBASE_DATABASE_URL = firebaseConfig.databaseURL
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const database = getDatabase(app);

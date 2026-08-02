@@ -12,9 +12,24 @@ import Card from '@/components/ui/Card';
 import CustomButton from '@/components/ui/CustomButton';
 import CustomInput from '@/components/ui/CustomInput';
 import TopHeaderAuthForm from '@/components/auth/TopHeaderAuthForm';
+import FooterAuthForm from '@/components/auth/FooterAuthForm';
 import { COLORS, SPACING, TYPOGRAPHY } from '@/theme';
 
+import { useNavigation } from '@react-navigation/native';
+
+import type { AuthStackParamList } from '@/navigation/types';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type LoginScreenNavigationProp =
+  NativeStackNavigationProp<AuthStackParamList, 'Login'>;
+
 const LoginScreen = () => {
+
+  const navigation = useNavigation<LoginScreenNavigationProp>();
+
+  function handleSignUpPress() {
+    navigation.navigate('Register');
+  }
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
@@ -57,7 +72,6 @@ const LoginScreen = () => {
           </View>
         </Card>
 
-        {/* Divider */}
         <View style={styles.divider}>
           <View style={styles.line} />
           <Text style={styles.dividerText}>or continue with</Text>
@@ -82,16 +96,11 @@ const LoginScreen = () => {
           </View>
         </View>
 
-        {/* Footer */}
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            Don't have an account?
-          </Text>
-
-          <Pressable onPress={() => console.log('Navigate to Sign Up')}>
-            <Text style={styles.signUp}>Sign Up</Text>
-          </Pressable>
-        </View>
+      <FooterAuthForm 
+        text="Don't have an account?"
+        actionText="Sign Up"
+        onPress={handleSignUpPress}
+       />
       </ScrollView>
     </SafeAreaView>
   );
@@ -110,10 +119,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: SPACING.lg,
   },
-
-  // card: {
-  //   marginTop: SPACING.xl,
-  // },
 
   divider: {
     flexDirection: 'row',
@@ -140,24 +145,5 @@ const styles = StyleSheet.create({
 
   socialButton: {
     flex: 1,
-  },
-
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: SPACING.xl,
-  },
-
-  footerText: {
-    color: COLORS.textSecondary,
-    ...TYPOGRAPHY.body,
-  },
-
-  signUp: {
-    marginLeft: SPACING.xs,
-    color: COLORS.primary,
-    ...TYPOGRAPHY.body,
-    fontWeight: `700`,
   },
 });

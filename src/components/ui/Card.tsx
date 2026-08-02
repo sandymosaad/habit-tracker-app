@@ -13,7 +13,8 @@ const style = StyleSheet.create({
         backgroundColor: COLORS.white,
         borderRadius: RADIUS.xl,
         padding: SPACING.lg,
-        width: '98%',
+        width: '95%',
+        marginHorizontal: SPACING.sm,
         ...SHADOWS.sm,
     },
 
