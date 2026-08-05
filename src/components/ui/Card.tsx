@@ -12,9 +12,9 @@ const style = StyleSheet.create({
     container: {
         backgroundColor: COLORS.white,
         borderRadius: RADIUS.xl,
-        padding: SPACING.lg,
+        padding: SPACING.sm,
         width: '95%',
-        marginHorizontal: SPACING.sm,
+        marginTop: SPACING.sm,
         ...SHADOWS.sm,
     },
 

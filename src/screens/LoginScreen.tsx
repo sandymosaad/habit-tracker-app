@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { KeyboardAvoidingView, Platform } from 'react-native';
 import Card from '@/components/ui/Card';
 import CustomButton from '@/components/ui/CustomButton';
 import CustomInput from '@/components/ui/CustomInput';
@@ -19,7 +19,7 @@ import { login } from '@/services/authService';
 import { useNavigation } from '@react-navigation/native';
 import {useAppDispatch} from '@/redux/hooks';
 import { authenticate } from '@/redux/slices/authSlice'
-
+import { getUserById } from '@/services/userService';
 import type { AuthStackParamList } from '@/navigation/types';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import ErrorMessage from '@/components/ui/ErrorMessage';
@@ -33,6 +33,7 @@ const LoginScreen = () => {
     password: '',
   });
   const [error, setError] = useState<string>('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const dispatch = useAppDispatch();
   function handleInputChange(field: 'email' | 'password', value: string) {
@@ -52,12 +53,14 @@ const LoginScreen = () => {
           password: userData.password
         }
       )
+      const user= await getUserById(response.localId, response.idToken)
+      
       dispatch(authenticate({
         token: response.idToken,
         userId: response.localId,
         email: response.email,
-        displayName: null,
-        profileImage:  null,
+        displayName: user.displayName,
+        profileImage:  user.profileImage,
       }));
       //profileImageUrl
     } catch (error) {
@@ -68,8 +71,12 @@ const LoginScreen = () => {
   }
   return (
     <SafeAreaView style={styles.safeArea}>
+     <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={styles.container}
+     >
       <ScrollView
-        contentContainerStyle={styles.container}
+        contentContainerStyle={styles.content}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
@@ -95,8 +102,10 @@ const LoginScreen = () => {
             placeholder="Enter your password"
             value={userData.password}
             onChangeText={userData => handleInputChange('password', userData)}
-            secureTextEntry
+            secureTextEntry={!showPassword}
+            autoCapitalize="none"
             icon="lock-outline"
+            setShowPassword={setShowPassword}
           />
           <ErrorMessage message={error} />
           <View style={{ marginTop: SPACING.md }}>
@@ -138,6 +147,7 @@ const LoginScreen = () => {
         onPress={handleSignUpPress}
        />
       </ScrollView>
+      </KeyboardAvoidingView> 
     </SafeAreaView>
   );
 };
@@ -155,7 +165,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: SPACING.lg,
   },
-
+  content: {
+    flexGrow: 1,
+    paddingBottom: 24,
+  },
   divider: {
     flexDirection: 'row',
     alignItems: 'center',

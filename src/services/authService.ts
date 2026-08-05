@@ -30,25 +30,3 @@ export async function login ({email,password}:LoginData){
 export async function register ({email,password}:RegisterData){
     return requestAuth({email, password, mode: 'signUp',})
 }
-export async function addUser({email, password,profileImage , displayName , userId}:
-    RegisterData & {profileImage: string, displayName: string , userId: string}){
-    const endpoint = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_API_KEY}`;
-    try {
-        const response = await axios.post<AuthResponse>(endpoint,{
-            email,
-            password,
-            returnSecureToken: true,
-            displayName,
-            profileImage,
-            userId
-        })
-        console.log('User added successfully');
-        return response.data
-    } catch (error){
-        if (axios.isAxiosError(error)) {
-            console.log(error.response?.data);
-        }
-
-        throw error;
-    }
-}

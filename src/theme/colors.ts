@@ -13,6 +13,10 @@ export const COLORS = {
   background: '#F8FAFC',
   surface: '#FFFFFF',
 
+  // Badge
+  primaryBadge: '#4F46E5',
+  lightBadge: '#E0E7FF',
+  mutedBadge: '#E5E7EB',
   // Text
   textPrimary: '#0F172A',
   textSecondary: '#64748B',

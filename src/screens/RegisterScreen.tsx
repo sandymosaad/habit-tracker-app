@@ -61,14 +61,14 @@ function RegisterScreen() {
       email: values.email,
       password: values.password,
     } )
-    //console.log('Register response:', response)
+    // console.log('Register response:', response)
     if (response && response.idToken) {
       dispatch(authenticate({
         token: response.idToken,
         userId: response.localId,
         email: response.email,
         displayName: values.fullName,
-        profileImage:"https://www.istockphoto.com/photos/profile-image" // default profile image URL,
+        profileImage:""
       }))
       await createUser({
         email: values.email,
