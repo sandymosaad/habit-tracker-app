@@ -9,8 +9,9 @@ type Props = {
   rightText?: string;
   color?: string;
   onPress?: () => void;
-  rightIconSwitchName?: keyof typeof MaterialCommunityIcons.glyphMap;
+  //rightIconSwitchName?: keyof typeof MaterialCommunityIcons.glyphMap;
   borderBottom?: boolean;
+  showNotification?:boolean;
 };
 
 function CardItem({
@@ -21,6 +22,7 @@ function CardItem({
   color = COLORS.primary,
   onPress,
   borderBottom ,
+  showNotification,
 }: Props) {
   return (
     <View style={styles.row}>

@@ -11,10 +11,12 @@ import * as ImagePicker from 'expo-image-picker';
 import {setProfileImage} from '../redux/slices/authSlice'
 import { uploadImageToCloudinary } from '@/utils/cloudinary';
 import {updateUserProfile} from '@/services/userService'
+import { useState } from 'react';
 function ProfileScreen() {
   const {displayName, email, userId, profileImage, token} = useAppSelector(state => state.auth)
    // console.log(displayName, email, userId, profileImage, token)
-  
+  const [showNotification, setShowNotification] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const dispatch = useAppDispatch()
 
   async function handleProfileImage() {
@@ -41,6 +43,12 @@ function ProfileScreen() {
 
   function handleLogout() {
     dispatch(logout());
+  }
+  function handleNotificationToggle(){
+    setShowNotification(!showNotification)
+  }
+  function handleDarkModeToggle(){
+    setDarkMode(!darkMode)
   }
   return <ScrollView
     style={styles.container}
@@ -79,31 +87,23 @@ function ProfileScreen() {
     </View>
 
     <View style={styles.infoCardsContainer}>
-      <InfoCard 
-        num={2}
-        text="Habits"
-      />
-      <InfoCard 
-        num={5}
-        text="Completed "
-      />
-      <InfoCard 
-        num={1}
-        text="Best Streak"
+      <InfoCard num={2}text="Habits"/>
+      <InfoCard num={5}text="Completed "/>
+      <InfoCard num={1}text="Best Streak"/>
+    </View>
+
+    <View>
+      <Text style={styles.sectionTitle}>Preferences</Text>
+      <Preferences 
+        showNotification={showNotification}
+        onToggleNotification={handleNotificationToggle}
+        onToggleDarkMode={handleDarkModeToggle}
+        darkMode={darkMode}
       />
     </View>
 
     <View>
-      <Text style={styles.sectionTitle}>
-        Preferences
-      </Text>
-      <Preferences />
-    </View>
-
-    <View>
-      <Text style={styles.sectionTitle}>
-        Danger Zone
-      </Text>
+      <Text style={styles.sectionTitle}>Danger Zone</Text>
       <View style={styles.logoutContainer}>
           <CardItem
             leftIconName="logout"
@@ -216,7 +216,3 @@ const styles = StyleSheet.create({
     ...SHADOWS.sm,
   },
 });
-
-// function handleImageSelected(imageUri: string) {
-//   throw new Error('Function not implemented.');
-// }
