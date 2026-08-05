@@ -8,9 +8,6 @@ import CustomInput from '@/components/ui/CustomInput'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import type { AuthStackParamList } from '@/navigation/types'
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
-
 import { register } from '@/services/authService'
 import { useAppDispatch } from '@/redux/hooks'
 import { authenticate } from '@/redux/slices/authSlice'
@@ -20,9 +17,14 @@ import {validateInputs} from '@/utils/validators'
 import ErrorMessage from '@/components/ui/ErrorMessage'
 import {getFirebaseErrorMessage} from '@/utils/firebaseErrors'
 import { KeyboardAvoidingView, Platform, StyleSheet, ScrollView } from 'react-native';
+import Loading from '@/components/ui/Loading'
+
+
+import type { AuthStackParamList } from '@/navigation/types'
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
+
 type RegisterScreenNavigationProp =
   NativeStackNavigationProp<AuthStackParamList, 'Register'>;
-import Loading from '@/components/ui/Loading'
 
 function RegisterScreen() {
   const navigation = useNavigation<RegisterScreenNavigationProp>()

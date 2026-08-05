@@ -5,10 +5,43 @@ import InfoCard from '@/components/ui/InfoCard'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Preferences from '@/components/Preferences';
 import CardItem from '@/components/CardItem';
+import {logout} from '../redux/slices/authSlice'
+import {useAppDispatch} from '../redux/hooks'
+import * as ImagePicker from 'expo-image-picker';
+import {setProfileImage} from '../redux/slices/authSlice'
+import { uploadImageToCloudinary } from '@/utils/cloudinary';
+import {updateUserProfile} from '@/services/userService'
 function ProfileScreen() {
   const {displayName, email, userId, profileImage, token} = useAppSelector(state => state.auth)
    // console.log(displayName, email, userId, profileImage, token)
   
+  const dispatch = useAppDispatch()
+
+  async function handleProfileImage() {
+      const permation = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      
+      if (!permation.granted){
+        alert('Permission to access media library is required!');
+        return;
+      }
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'], 
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+    if (!result.canceled) {
+      const cloudinaryUrl =await uploadImageToCloudinary(result.assets[0].uri);
+      await updateUserProfile(userId!, token!, 
+        {profileImage: cloudinaryUrl});
+      dispatch(setProfileImage(cloudinaryUrl));
+
+    }
+  }
+
+  function handleLogout() {
+    dispatch(logout());
+  }
   return <ScrollView
     style={styles.container}
     contentContainerStyle={styles.content}
@@ -27,7 +60,7 @@ function ProfileScreen() {
       </View>
     )}
     <TouchableOpacity
-        onPress={() => {}}
+        onPress={handleProfileImage}
         style={styles.editIcon}
         >
         <MaterialCommunityIcons
@@ -77,6 +110,7 @@ function ProfileScreen() {
             text="Log Out"
             rightIconName="chevron-right"
             color={COLORS.primaryBadge}
+            onPress={handleLogout}
           />
       </View>
     </View>
@@ -96,7 +130,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
     paddingHorizontal: SPACING.lg,
-    paddingTop: SPACING.xxxl,
+    paddingTop: SPACING.xxl,
     paddingBottom: SPACING.xl,
   },
 
@@ -182,3 +216,7 @@ const styles = StyleSheet.create({
     ...SHADOWS.sm,
   },
 });
+
+// function handleImageSelected(imageUri: string) {
+//   throw new Error('Function not implemented.');
+// }

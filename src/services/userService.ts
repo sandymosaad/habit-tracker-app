@@ -40,3 +40,20 @@ export async function getUserById(userId: string, token: string) {
         throw error;
     }
 }
+
+export async function updateUserProfile(userId: string, token: string, updatedData: { displayName?: string; profileImage?: string }) {
+    try {
+        const response = await axios.patch(`${FIREBASE_DATABASE_URL}/users/${userId}.json?auth=${token}`, updatedData);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating user profile in database:', error);
+        if (axios.isAxiosError(error)) {
+            const errorMessage =
+                error.response?.data ??
+                'An error occurred while updating the user profile in the database.';
+            console.log('Error details:', errorMessage);
+            return errorMessage;
+        }
+        throw error;
+    }
+}

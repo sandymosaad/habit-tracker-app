@@ -25,11 +25,15 @@ function CardItem({
   return (
     <View style={styles.row}>
       <View style={styles.iconContainer}>
+        <Pressable 
+        {...text==='Log Out' ? {onPress: onPress} : {}}
+       >
         <MaterialCommunityIcons
           name={leftIconName}
           size={24}
           color={COLORS.primary}
         />
+        </Pressable>
       </View>
 
       <View style={[styles.infoRow, borderBottom ? styles.borderBottom : null]}>

@@ -11,10 +11,12 @@ export default Card
 const style = StyleSheet.create({
     container: {
         backgroundColor: COLORS.white,
-        borderRadius: RADIUS.xl,
-        padding: SPACING.sm,
+        borderRadius: RADIUS.lg,
+        paddingVertical: SPACING.md,
         width: '95%',
         marginTop: SPACING.sm,
+        marginLeft: SPACING.sm,
+        paddingHorizontal: SPACING.md,
         ...SHADOWS.sm,
     },
 

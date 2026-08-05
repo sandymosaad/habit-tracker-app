@@ -18,16 +18,14 @@ const AuthNavigator = () =>  {
             headerShown: false,
         }}
         >
-
-        <AuthStack.Screen
-            name="Register"
-            component={RegisterScreen}
-        />
         <AuthStack.Screen
             name="Login"
             component={LoginScreen}
         />
-
+        <AuthStack.Screen
+            name="Register"
+            component={RegisterScreen}
+        />
         {/* <AuthStack.Screen
             name="Register"
             component={RegisterScreen}

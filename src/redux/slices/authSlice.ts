@@ -31,10 +31,13 @@ const authSlice = createSlice({
         logout(){
             return initialState
         },
+        setProfileImage(state, action: PayloadAction<string | null>) {
+            state.profileImage = action.payload;
+        }
 
     }
 
 })
 
-export const {authenticate , logout} = authSlice.actions
+export const {authenticate , logout, setProfileImage } = authSlice.actions
 export default authSlice.reducer
