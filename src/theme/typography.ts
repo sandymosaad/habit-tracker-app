@@ -22,6 +22,11 @@ export const TYPOGRAPHY = {
     fontWeight: '400',
   },
 
+  label: {
+    fontSize: 14,
+    fontWeight: '400',
+  },
+
   caption: {
     fontSize: 12,
     fontWeight: '400',

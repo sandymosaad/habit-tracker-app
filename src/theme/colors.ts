@@ -5,7 +5,7 @@ export const COLORS = {
   accent: '#F59E0B',
 
   // Status
-  success: '#22C55E',
+  success: '#79ffa8',
   warning: '#F59E0B',
   error: '#EF4444',
 
@@ -29,6 +29,25 @@ export const COLORS = {
   white: '#FFFFFF',
   black: '#000000',
 
+  // Category colors
+  lightGreen: '#DCFCE7',
+  lightBlue: '#DBEAFE',
+  lightPurple: '#EDE9FE',
+  lightYellow: '#FEF3C7',
+  lightPink: '#FCE7F3',
+  lightTeal: '#CCFBF1',
+  lightViolet: '#F3E8FF',
+  lightOrange: '#FFEDD5',
+
+  // Category text colors
+  darkGreen: '#15803D',
+  darkBlue: '#1D4ED8',
+  darkPurple: '#6D28D9',
+  darkYellow: '#B45309',
+  darkPink: '#BE185D',
+  darkTeal: '#0F766E',
+  darkViolet: '#7E22CE',
+  darkOrange: '#C2410C',
 
   disabled: '#E5E7EB',
 } as const;

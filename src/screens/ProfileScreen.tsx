@@ -11,7 +11,9 @@ import * as ImagePicker from 'expo-image-picker';
 import {setProfileImage} from '../redux/slices/authSlice'
 import { uploadImageToCloudinary } from '@/utils/cloudinary';
 import {updateUserProfile} from '@/services/userService'
+
 import { useState } from 'react';
+
 function ProfileScreen() {
   const {displayName, email, userId, profileImage, token} = useAppSelector(state => state.auth)
    // console.log(displayName, email, userId, profileImage, token)

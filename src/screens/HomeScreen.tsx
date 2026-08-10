@@ -5,15 +5,30 @@ import BellIcon from '@/components/ui/BellIcon'
 import { COLORS, SPACING,TYPOGRAPHY } from '@/theme'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import HabitCard from '@/components/HabitCard'
+import { useState } from 'react'
+import PlusIcon from '@/components/ui/PlusIcon'
+import { useNavigation } from '@react-navigation/native';
+import type {AppStackParamList  } from '@/navigation/types';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+type HomeScreenNavigationProp =
+  NativeStackNavigationProp<AppStackParamList, 'AddHabit'>;
 
 function HomeScreen() {
   const {displayName} = useAppSelector((state: any) => state.auth)
+  const navigation = useNavigation<HomeScreenNavigationProp>(); 
   console.log('Auth State:', displayName)
   const completed = 1;
   const total = 7;
 
   const progress = Math.round((completed / total) * 100);
-  return <SafeAreaView >
+
+  function handleAddHabit() {
+     navigation.navigate('AddHabit');
+  }
+  return <SafeAreaView
+    style={styles.container}>
+
     <View style={styles.header}>
         <View >
             <Text style={styles.headerTitle}>
@@ -59,19 +74,70 @@ function HomeScreen() {
         )}
       </AnimatedCircularProgress>
     </View>
+
+    <View style={styles.header}>
+      <Text style={styles.headerSubtitle}>Today's Habits</Text>
+      <Text style={styles.headerSubtitle}>{total} habits</Text>
+    </View>
+    <HabitCard 
+        habitName="Read a book"
+        habitStatus="Done"
+       // setHabitStatus={setHabitStatus}
+        habitStreak={5}
+        habitCategory="Learning"
+        habitIcon="book"
+        habitBadgeColor="lightPurple"
+        habitBadgeTextColor="darkPurple"
+    />
+    <HabitCard
+        habitName="Exercise"
+        habitStatus="Not Done"
+       // setHabitStatus={setHabitStatus}
+        habitStreak={2}
+        habitCategory="Health"
+        habitIcon="dumbbell"
+        habitBadgeColor="lightGreen"
+        habitBadgeTextColor="darkGreen"
+    />
+    <HabitCard
+        habitName="Meditate"
+        habitStatus="Not Done"
+       // setHabitStatus={setHabitStatus}
+        habitStreak={10}
+        habitCategory="Mindfulness"
+        habitIcon="meditation"
+        habitBadgeColor="lightBlue"
+        habitBadgeTextColor="darkBlue"
+    />
+    <HabitCard
+        habitName="Exercise"
+        habitStatus="Not Done"
+       // setHabitStatus={setHabitStatus}
+        habitStreak={2}
+        habitCategory="Health"
+        habitIcon="dumbbell"
+        habitBadgeColor="lightGreen"
+        habitBadgeTextColor="darkGreen"
+    />
+    <PlusIcon onPress={handleAddHabit} />
+
   </SafeAreaView>
 }
 
 export default HomeScreen
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
-    marginTop:SPACING.md,
+    marginTop:SPACING.xl,
   },
   headerTitle: {
     ...TYPOGRAPHY.h2,

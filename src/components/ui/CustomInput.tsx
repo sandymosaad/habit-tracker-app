@@ -8,7 +8,7 @@ import EyeIcon from "./EyeIcon";
 interface CustomInputProps {
     title: string;
     placeholder: string;
-    icon: IconName;
+    icon?: IconName;
     value: string;
     onChangeText: (text: string) => void;
     secureTextEntry?: boolean;
@@ -16,20 +16,23 @@ interface CustomInputProps {
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
     autoCorrect?: boolean;
     error?: string | null;
-
+    multiline?: boolean;
+    numberOfLines?: number;
     setShowPassword?: (value: boolean) => void;
 }
 function CustomInput(
-    {title,placeholder, icon, value, onChangeText, secureTextEntry, keyboardType, autoCapitalize, autoCorrect , error,setShowPassword}: CustomInputProps) {
+    {title,placeholder, icon, value, onChangeText,numberOfLines,multiline =false, secureTextEntry, keyboardType, autoCapitalize, autoCorrect , error,setShowPassword}: CustomInputProps) {
   return <View>
     <Text style={styles.label}>{title}</Text>
     <View>
+        {/* {icon && */}
         <MaterialCommunityIcons
             name={icon}
             size={24}
             color={COLORS.textSecondary}
             style={styles.icon}
         />
+        {/* } */}
         <TextInput 
             placeholder={placeholder}
             value={value}
@@ -38,7 +41,9 @@ function CustomInput(
             keyboardType={keyboardType}
             autoCapitalize={autoCapitalize}
             autoCorrect={autoCorrect}
-            style={styles.input}
+            numberOfLines={numberOfLines}
+            multiline={multiline}
+            style={[styles.input, multiline && styles.multilineInput]}
         />
         {title.toLowerCase().includes('password') && setShowPassword &&(
         <EyeIcon 
@@ -54,8 +59,7 @@ function CustomInput(
 
 export default CustomInput
 
-const styles = StyleSheet.create({
-    
+const styles = StyleSheet.create({  
     input: {
         borderWidth: 1,
         borderColor:COLORS.border,
@@ -63,6 +67,8 @@ const styles = StyleSheet.create({
         padding: SPACING.md,
         marginVertical: SPACING.sm,
         paddingLeft: SPACING.lg + 24, 
+        backgroundColor: COLORS.white,
+        ...SHADOWS.sm,
     },
     label: {
         ...TYPOGRAPHY.h4,
@@ -73,7 +79,13 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: SPACING.sm,
         top: '50%',
+        zIndex: 1,
         transform: [{ translateY: -12 }],
+    },
+    multilineInput: {
+        minHeight: 100,
+        textAlignVertical: 'top',
+        paddingLeft: SPACING.md,
     },
     eyeIcon: {
         position: 'absolute',
@@ -81,5 +93,4 @@ const styles = StyleSheet.create({
         top: '30%',
         transform: [{ translateX: -12 }],
     },
-
 })

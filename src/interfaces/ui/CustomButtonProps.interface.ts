@@ -5,5 +5,9 @@ export interface CustomButtonProps {
   loading?: boolean;
   disabled?: boolean;
 
+  styles?: {
+    button?: object;
+    title?: object;
+  };
   variant?: 'primary' | 'secondary' | 'white' | 'black';
 }
