@@ -1,18 +1,19 @@
 import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
-
+import { COLORS, SPACING } from '@/theme';
 export const habitCategoryColors = [
-  '#FF6B6B',
-  '#4ECDC4',
-  '#FFD93D',
-  '#6A4C93',
-  '#FF9F1C',
-  '#2EC4B6',
-  '#FF595E',
-  '#8AC926',
+  COLORS.lightGreen,
+  COLORS.lightBlue,
+  COLORS.lightPurple,
+  COLORS.lightYellow,
+  COLORS.lightPink,
+  COLORS.lightTeal,
+  COLORS.lightViolet,
+  COLORS.lightOrange,
 ] as const;
 
 export type HabitCategoryColor = (typeof habitCategoryColors)[number];
+
 type ColorCircleProps = {
   color: HabitCategoryColor;
   selected?: boolean;
@@ -29,7 +30,7 @@ function ColorCircle({
       onPress={onPress}
       style={[
         styles.colorCircle,
-        styles[color],
+        {backgroundColor: color},
         selected && styles.selected,
       ]}
     />

@@ -1,4 +1,4 @@
-import {Text, View, StyleSheet, SafeAreaView } from 'react-native'
+import {Text, View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
 import {useAppSelector} from '@/redux/hooks'
 import { getCurrentDate } from '@/utils/helpers'
 import BellIcon from '@/components/ui/BellIcon'
@@ -6,21 +6,41 @@ import { COLORS, SPACING,TYPOGRAPHY } from '@/theme'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import HabitCard from '@/components/HabitCard'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PlusIcon from '@/components/ui/PlusIcon'
 import { useNavigation } from '@react-navigation/native';
 import type {AppStackParamList  } from '@/navigation/types';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import {getHabits} from '@/services/habitService'
+import { Habit } from '@/interfaces/habit.interface'
+import { habitBadgeTextColorMap } from '@/types/Habit'
+
 type HomeScreenNavigationProp =
   NativeStackNavigationProp<AppStackParamList, 'AddHabit'>;
 
 function HomeScreen() {
   const {displayName} = useAppSelector((state: any) => state.auth)
+  const [habits, setHabits] = useState<Habit[]>([])
   const navigation = useNavigation<HomeScreenNavigationProp>(); 
+  const {userId, token} = useAppSelector((state: any) => state.auth)
+
   console.log('Auth State:', displayName)
+  useEffect(() => {
+    const fetchHabits = async () => {
+      try {
+        const fetchedHabits = await getHabits(userId, token);
+        setHabits(fetchedHabits);
+        console.log('Fetched Habits:', fetchedHabits);
+      } catch (error) {
+        console.error('Error fetching habits:', error);
+      }
+    };
+
+    fetchHabits();
+  }, []);
   const completed = 1;
   const total = 7;
-
+ 
   const progress = Math.round((completed / total) * 100);
 
   function handleAddHabit() {
@@ -79,46 +99,22 @@ function HomeScreen() {
       <Text style={styles.headerSubtitle}>Today's Habits</Text>
       <Text style={styles.headerSubtitle}>{total} habits</Text>
     </View>
-    <HabitCard 
-        habitName="Read a book"
-        habitStatus="Done"
-       // setHabitStatus={setHabitStatus}
-        habitStreak={5}
-        habitCategory="Learning"
-        habitIcon="book"
-        habitBadgeColor="lightPurple"
-        habitBadgeTextColor="darkPurple"
-    />
-    <HabitCard
-        habitName="Exercise"
-        habitStatus="Not Done"
-       // setHabitStatus={setHabitStatus}
-        habitStreak={2}
-        habitCategory="Health"
-        habitIcon="dumbbell"
-        habitBadgeColor="lightGreen"
-        habitBadgeTextColor="darkGreen"
-    />
-    <HabitCard
-        habitName="Meditate"
-        habitStatus="Not Done"
-       // setHabitStatus={setHabitStatus}
-        habitStreak={10}
-        habitCategory="Mindfulness"
-        habitIcon="meditation"
-        habitBadgeColor="lightBlue"
-        habitBadgeTextColor="darkBlue"
-    />
-    <HabitCard
-        habitName="Exercise"
-        habitStatus="Not Done"
-       // setHabitStatus={setHabitStatus}
-        habitStreak={2}
-        habitCategory="Health"
-        habitIcon="dumbbell"
-        habitBadgeColor="lightGreen"
-        habitBadgeTextColor="darkGreen"
-    />
+    
+    <PlusIcon onPress={handleAddHabit} />
+      <FlatList
+        data={habits}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <HabitCard
+            habitName={item.title}
+            habitStatus={item.isCompletedToday ? 'Done' : 'Not Done'}
+            habitStreak={item.streak}
+            habitCategory={item.category}
+            habitIcon={item.icon}
+            habitBadgeColor={item.color}
+            habitBadgeTextColor={habitBadgeTextColorMap[item.color]}          />
+        )}
+      />
     <PlusIcon onPress={handleAddHabit} />
 
   </SafeAreaView>

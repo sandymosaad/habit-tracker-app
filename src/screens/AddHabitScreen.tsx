@@ -8,7 +8,6 @@ import {
   Text,
   View,
 } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { COLORS, SPACING, TYPOGRAPHY, RADIUS } from '@/theme';
 import { IconName } from '@/types/Icon';

@@ -1,3 +1,6 @@
+import { HabitBackgroundColor } from "@/types/Habit";
+import { IconName } from "@/types/Icon";
+
 export interface Habit {
   id: string;
 
@@ -5,8 +8,8 @@ export interface Habit {
   description: string;
 
   category: string;
-  color: string;
-  icon: string;
+  color: HabitBackgroundColor;
+  icon: IconName;
 
   frequency: 'daily' | 'weekly' | 'monthly';
 

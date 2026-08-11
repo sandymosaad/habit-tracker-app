@@ -1,42 +1,22 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { COLORS, SPACING } from '@/theme';
-
-type BadgeColor =
-  | 'primary'
-  | 'lightGreen'
-  | 'lightBlue'
-  | 'lightPurple'
-  | 'lightYellow'
-  | 'lightPink'
-  | 'lightTeal'
-  | 'lightViolet'
-  | 'lightOrange';
-
-type BadgeTextColor =
-  | 'white'
-  | 'darkGreen'
-  | 'darkBlue'
-  | 'darkPurple'
-  | 'darkYellow'
-  | 'darkPink'
-  | 'darkTeal'
-  | 'darkViolet'
-  | 'darkOrange';
+import { HabitBackgroundColor, HabitBadgeTextColor } from '@/types/Habit';
 
 type BadgeProps = {
   text: string;
-  backgroundColor?: BadgeColor;
-  textColor?: BadgeTextColor;
+  backgroundColor?: HabitBackgroundColor;
+  textColor?: HabitBadgeTextColor;
 };
 
 function Badge({
   text,
-  backgroundColor = 'primary',
-  textColor = 'white',
+  backgroundColor = COLORS.primary,
+  textColor = COLORS.white,
 }: BadgeProps) {
+  console.log('Badge props:', { text, backgroundColor, textColor });
   return (
-    <View style={[styles.badgeContainer, styles[backgroundColor]]}>
-      <Text style={[styles.badgeText, styles[`text_${textColor}`]]}>
+    <View style={[styles.badgeContainer, {backgroundColor}]}>
+      <Text style={[styles.badgeText, {color:textColor}]}>
         {text}
       </Text>
     </View>

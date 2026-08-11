@@ -27,3 +27,24 @@ export async function addHabit({
     throw error;
   }
 }
+
+export async function getHabits(userId: string, token: string): Promise<Habit[]> {
+  const url = `${FIREBASE_DATABASE_URL}/habits/${userId}.json?auth=${token}`;
+
+  try {
+    const response = await axios.get(url);
+    const habitsData = response.data;
+
+    if (!habitsData) {
+      return [];
+    }
+
+    return Object.entries(habitsData).map(([id, habit]) => ({
+      id,
+      ...(habit as Omit<Habit, 'id'>),
+    }));
+  } catch (error) {
+    console.error('Error fetching habits:', error);
+    throw error;
+  }
+}

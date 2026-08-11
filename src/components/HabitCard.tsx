@@ -7,29 +7,10 @@ import Card from './ui/Card';
 import Badge from './ui/Badge';
 import { IconName } from '@/types/Icon';
 import { useRef, useEffect } from 'react';
+import { HabitBackgroundColor, HabitBadgeTextColor,habitBadgeTextColorMap } from '@/types/Habit';
 
-type HabitBackgroundColor = 
- 'lightGreen' 
- | 'lightBlue' 
- | 'lightPurple' 
- | 'lightYellow' 
- | 'lightPink' 
- | 'lightTeal' 
- | 'lightViolet' 
- | 'lightOrange'
 
- type HabitBadgeTextColor =
- 'white' 
- | 'darkGreen'
- | 'darkBlue' 
- | 'darkPurple'
- | 'darkYellow' 
- | 'darkPink' 
- | 'darkTeal' 
- | 'darkViolet' 
- | 'darkOrange'
-
- type HabitCardProps = {
+type HabitCardProps = {
   habitName: string;
   habitStatus: string;
   habitStreak: number;
@@ -45,7 +26,7 @@ function HabitCard({habitName, habitStatus,
       const [statusHabit, setStatusHabit] = useState(habitStatus);
 
     const borderAnimation = useRef(new Animated.Value(0)).current;
-
+    console.log('habitStatus:', habitBadgeColor, habitBadgeTextColor, statusHabit);
     useEffect(() => {
       Animated.timing(borderAnimation, {
         toValue: statusHabit === 'Done' ? 1 : 0,
@@ -63,7 +44,6 @@ function HabitCard({habitName, habitStatus,
       setStatusHabit((prevStatus) => (prevStatus === 'Done' ? 'Not Done' : 'Done'));
     }
   return <Card>
-
     <View style ={styles.row } >
         <Icon iconName={habitIcon} />
         <View style ={styles.habitContent}>
@@ -75,8 +55,8 @@ function HabitCard({habitName, habitStatus,
                 {statusHabit ==='Done' && (
                 <Badge
                     text="Done" 
-                    backgroundColor="lightGreen" 
-                    textColor="darkGreen" 
+                    backgroundColor={COLORS.lightGreen}
+                    textColor={COLORS.darkGreen} 
                 />
                 )}
             </View>
