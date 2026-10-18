@@ -10,11 +10,13 @@ const RootNavigator = () => {
   
   return (
     <NavigationContainer>
-      {isAuthenticated ? (
+              <AppNavigator />
+
+      {/* {isAuthenticated ? (
         <AppNavigator />
       ) : (
         <AuthNavigator />
-      )}
+      )} */}
     </NavigationContainer>
   );
 };

@@ -28,7 +28,7 @@ export async function addHabit({
   }
 }
 
-export async function getHabits(userId: string, token: string): Promise<Habit[]> {
+export async function getHabits(userId: string|null, token: string|null): Promise<Habit[]> {
   const url = `${FIREBASE_DATABASE_URL}/habits/${userId}.json?auth=${token}`;
 
   try {

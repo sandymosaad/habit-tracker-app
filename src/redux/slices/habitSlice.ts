@@ -28,6 +28,9 @@ const habitSlice = createSlice({
                 habit => habit.id !== action.payload
             )
         },
+        // getHabit(state, action: PayloadAction<string>) {
+        //     return state.habits.find(habit => habit.id === action.payload);
+        // },
         setError(state, action:PayloadAction<string | null>){
             state.error = action.payload
         },
@@ -36,6 +39,9 @@ const habitSlice = createSlice({
         }
     }
 })
+
+// export const selectHabitById = (state: RootState, id: string) =>
+//   state.habits.habits.find(habit => habit.id === id);
 
 export const {setHabits,addHabit,updateHabit,deleteHabit, setError, setLoading}= habitSlice.actions
 

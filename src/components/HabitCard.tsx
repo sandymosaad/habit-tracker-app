@@ -8,10 +8,12 @@ import Badge from './ui/Badge';
 import { IconName } from '@/types/Icon';
 import { useRef, useEffect } from 'react';
 import { HabitBackgroundColor, HabitBadgeTextColor,habitBadgeTextColorMap } from '@/types/Habit';
-
+import { updateHabit } from '@/redux/slices/habitSlice';
+import { useAppDispatch } from '@/redux/hooks';
 
 type HabitCardProps = {
-  habitName: string;
+  id: string;
+  habitTitle: string;
   habitStatus: string;
   habitStreak: number;
   habitCategory: string;
@@ -19,14 +21,17 @@ type HabitCardProps = {
   habitBadgeColor: HabitBackgroundColor;
   habitBadgeTextColor: HabitBadgeTextColor;
 };
-function HabitCard({habitName, habitStatus,
+function HabitCard({id
+  ,habitTitle, habitStatus,
      habitStreak, habitCategory,habitIcon ,
       habitBadgeColor, habitBadgeTextColor,
-        }:HabitCardProps) {
-      const [statusHabit, setStatusHabit] = useState(habitStatus);
-
+        }:HabitCardProps
+      ) {
+          
+    const [statusHabit, setStatusHabit] = useState(habitStatus);
+    const dispatch = useAppDispatch();      
     const borderAnimation = useRef(new Animated.Value(0)).current;
-    console.log('habitStatus:', habitBadgeColor, habitBadgeTextColor, statusHabit);
+    //console.log('habitStatus:', habitBadgeColor, habitBadgeTextColor, statusHabit);
     useEffect(() => {
       Animated.timing(borderAnimation, {
         toValue: statusHabit === 'Done' ? 1 : 0,
@@ -40,17 +45,60 @@ function HabitCard({habitName, habitStatus,
       outputRange: [COLORS.textDisabled, COLORS.primary],
     });
 
-    function toggleHabitStatus() {
-      setStatusHabit((prevStatus) => (prevStatus === 'Done' ? 'Not Done' : 'Done'));
-    }
+    // function toggleHabitStatus() {
+    //   setStatusHabit((prevStatus) => {
+    //   const newStatus = prevStatus === 'Done' ? 'Not Done' : 'Done';
+
+//       export interface Habit {
+//   id: string;
+
+//   title: string;
+//   description: string;
+
+//   category: string;
+//   color: HabitBackgroundColor;
+//   icon: IconName;
+
+//   frequency: 'daily' | 'weekly' | 'monthly';
+
+//   goal: number;
+//   progress: number;
+//   streak: number;
+  
+//   startDate: string;  
+//   reminderEnabled: boolean;
+//   reminderTime: string | null;
+
+//   isActive: boolean;
+//   isCompletedToday: boolean;
+
+//   createdAt: string;
+// }
+//       dispatch(
+//         updateHabit({
+//           id,
+//           isCompletedToday: newStatus === 'Done',
+//           title:habitTitle,
+//           streak:habitStreak,
+//           category:habitCategory,
+//           icon:habitIcon,
+//           color:habitBadgeColor,
+//           textColor:habitBadgeTextColor,
+
+//         })
+//     );
+
+//     return newStatus;
+//   });
+// }
   return <Card>
     <View style ={styles.row } >
         <Icon iconName={habitIcon} />
         <View style ={styles.habitContent}>
             <View style={styles.row}>
 
-                <Text style={styles.habitName}>
-                    {habitName}
+                <Text style={styles.habitTitle}>
+                    {habitTitle}
                 </Text>
                 {statusHabit ==='Done' && (
                 <Badge
@@ -82,7 +130,9 @@ function HabitCard({habitName, habitStatus,
             />
 
         </View>
-        <Pressable onPress={toggleHabitStatus}>
+        <Pressable 
+          //onPress={toggleHabitStatus}
+        >
         <MaterialCommunityIcons
             name="check-circle-outline"
             size={28}
@@ -100,7 +150,7 @@ const styles =StyleSheet.create( {
         alignItems:'center',
         gap:SPACING.sm,
     },
-    habitName:{
+    habitTitle:{
         ...TYPOGRAPHY.h3,
     },
     habitContent:{

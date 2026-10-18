@@ -1,5 +1,4 @@
 import {Text, View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
-import {useAppSelector} from '@/redux/hooks'
 import { getCurrentDate } from '@/utils/helpers'
 import BellIcon from '@/components/ui/BellIcon'
 import { COLORS, SPACING,TYPOGRAPHY } from '@/theme'
@@ -14,38 +13,52 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {getHabits} from '@/services/habitService'
 import { Habit } from '@/interfaces/habit.interface'
 import { habitBadgeTextColorMap } from '@/types/Habit'
-
+import { setHabits } from '@/redux/slices/habitSlice';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 type HomeScreenNavigationProp =
   NativeStackNavigationProp<AppStackParamList, 'AddHabit'>;
 
 function HomeScreen() {
-  const {displayName} = useAppSelector((state: any) => state.auth)
-  const [habits, setHabits] = useState<Habit[]>([])
+  const {displayName, userId, token} = useAppSelector((state) => state.auth)
   const navigation = useNavigation<HomeScreenNavigationProp>(); 
-  const {userId, token} = useAppSelector((state: any) => state.auth)
+  //console.log('Auth State:', displayName)
+   const habits = useAppSelector(
+    (state) => state.habits.habits
+  );
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [completedHabits, setCompletedHabits] = useState(0);
+  const [totalHabits, setTotalHabits] = useState(0);
 
-  console.log('Auth State:', displayName)
+  const dispatch = useAppDispatch();
   useEffect(() => {
     const fetchHabits = async () => {
       try {
         const fetchedHabits = await getHabits(userId, token);
-        setHabits(fetchedHabits);
+          dispatch(setHabits(fetchedHabits));
+          setTotalHabits(fetchedHabits.length);
+          const completedCount = fetchedHabits.filter(habit => habit.isCompletedToday).length;
+          setCompletedHabits(completedCount);        
         console.log('Fetched Habits:', fetchedHabits);
       } catch (error) {
         console.error('Error fetching habits:', error);
       }
     };
 
-    fetchHabits();
-  }, []);
-  const completed = 1;
-  const total = 7;
+    if (userId && token) {
+      fetchHabits();
+    }
+  }, [userId, token, dispatch]);
+  // const completed = 1;
+  // const total = 7;
  
-  const progress = Math.round((completed / total) * 100);
+  const progress = Math.round((completedHabits / totalHabits ) * 100);
 
   function handleAddHabit() {
      navigation.navigate('AddHabit');
   }
+
+
   return <SafeAreaView
     style={styles.container}>
 
@@ -72,7 +85,7 @@ function HomeScreen() {
           </Text>
 
           <Text style={styles.progressSubtitle}>
-            {completed} of {total} habits completed
+            {completedHabits} of {totalHabits} habits completed
           </Text>
         </View>
 
@@ -97,7 +110,7 @@ function HomeScreen() {
 
     <View style={styles.header}>
       <Text style={styles.headerSubtitle}>Today's Habits</Text>
-      <Text style={styles.headerSubtitle}>{total} habits</Text>
+      <Text style={styles.headerSubtitle}>{totalHabits} habits</Text>
     </View>
     
     <PlusIcon onPress={handleAddHabit} />
@@ -106,13 +119,15 @@ function HomeScreen() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <HabitCard
-            habitName={item.title}
+            id={item.id}
+            habitTitle={item.title}
             habitStatus={item.isCompletedToday ? 'Done' : 'Not Done'}
             habitStreak={item.streak}
             habitCategory={item.category}
             habitIcon={item.icon}
             habitBadgeColor={item.color}
-            habitBadgeTextColor={habitBadgeTextColorMap[item.color]}          />
+            habitBadgeTextColor={habitBadgeTextColorMap[item.color]}         
+             />
         )}
       />
     <PlusIcon onPress={handleAddHabit} />
@@ -185,3 +200,7 @@ const styles = StyleSheet.create({
     opacity: 0.85,
   },
 })
+
+function dispatch(arg0: { payload: Habit[]; type: "habit/setHabits" }) {
+  throw new Error('Function not implemented.')
+}
